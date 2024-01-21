@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        #startQuiz,#quizBox,#restartQuiz{
+            max-width: 800px;
+            margin: 200px auto 0px auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Start Quiz -->
+    <div id="startQuiz" class="bg-light p-5 shadow">
+        <h1 class="text-center">Quiz</h1>
+        <hr class="mb-5">
+        <input type="text" id="playerName" placeholder="Enter your Name" class="form-control w-50 m-auto">
+        <input type="button" value="Start Quiz" id="startQuizBtn" class="btn btn-dark mt-3 m-auto d-block">
+    </div>
+
+    <div id="quizBox" class="bg-light p-5 shadow">
+        <div class="row">
+            <div class="col">
+                <h4 id="changePlayerName">Player</h4>
+            </div>
+            <div class="col">
+                <h4 id="time" class="text-center">00:00</h4>
+            </div>
+            <div class="col">
+                <h4 id="points" class="float-end">Points: 0</h4>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col">
+                <h2 id="q">Question</h2>
+            </div>
+        </div>
+
+        <div class="row row-cols-2 mt-4">
+            <div class="col">
+                <input type="button" value="a" id="a" class="opt btn btn-dark w-100 mt-4">
+            </div>
+            <div class="col">
+                <input type="button" value="b" id="b" class="opt btn btn-dark w-100 mt-4">
+            </div>
+            <div class="col">
+                <input type="button" value="c" id="c" class="opt btn btn-dark w-100 mt-4">
+            </div>
+            <div class="col">
+                <input type="button" value="d" id="d" class="opt btn btn-dark w-100 mt-4">
+            </div>
+        </div>
+
+        <hr class="mt-5">
+
+        <div class="row">
+            <div class="col">
+                <h4 id="questionNo">Question No. 0/0</h4>
+            </div>
+            <div class="col">
+                <input type="button" value="50-50" id="lifeLine" class="btn btn-dark w-50 d-block m-auto">
+            </div>
+            <div class="col">
+                <input type="button" value="Next" id="nextQuestion" class="btn btn-outline-dark w-50 float-end">
+            </div>
+        </div>
+    </div>
+
+    <div id="restartQuiz" class="bg-light p-5 shadow">
+        <h3 id="finalPoints" class="text-center">Final Points: 0</h3>
+        <input type="button" value="Restart Quiz" id="restartQuizBtn" class="btn btn-dark m-auto d-block mt-3">
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/jQuery.js"></script>
+    <script>
+        //=========Questions=========//
+        var questions = [
+            {
+                q: "Who is the father of computer?",
+                a: "Mark Zuckerberg",
+                b: "Charles Babbage",
+                c: "Isaac Newton",
+                d: "Jeff Bezos",
+                ans: "b",
+                opt1: "c",
+                opt2: "d"
+            },
+            {
+                q: "Which keys are used to switch between programs in windows?",
+                a: "Ctrl+Tab",
+                b: "Alt+Tab",
+                c: "Shift+Tab",
+                d: "Shift+Enter",
+                ans: "b",
+                opt1: "a",
+                opt2: "d"
+            },
+            {
+                q: "The instructions about booting your system is stored in?",
+                a: "RAM",
+                b: "CPU",
+                c: "BIOS",
+                d: "ROM",
+                ans: "c",
+                opt1: "a",
+                opt2: "b"
+            },
+            {
+                q: "In the context of the Internet, What is the full form of URL?",
+                a: "User Requested Link",
+                b: "Ultimate Response Location",
+                c: "Unique Request Locator",
+                d: "Uniform Resource Locator",
+                ans: "d",
+                opt1: "a",
+                opt2: "b"
+            },
+            {
+                q: "What is the brain of a computer system called?",
+                a: "RAM",
+                b: "CPU",
+                c: "GPU",
+                d: "None of the above",
+                ans: "b",
+                opt1: "c",
+                opt2: "d"
+            },
+            {
+                q: "What does CPU stand for?",
+                a: "Central Processing Unit",
+                b: "Control Processing Unit",
+                c: "Computer Processing Unit",
+                d: "Computer Programmming Unit",
+                ans: "a",
+                opt1: "b",
+                opt2: "d"
+            },
+            {
+                q: "What is known as temporary memory or volatile memory?",
+                a: "SSD",
+                b: "HDD",
+                c: "RAM",
+                d: "ROM",
+                ans: "c",
+                opt1: "a",
+                opt2: "b"
+            },
+            {
+                q: "What does ALU stand for in the context of computers?",
+                a: "Array Logic Unit",
+                b: "Arithmatic Logic Unit",
+                c: "Application Logic Unit",
+                d: "Automatic Logic Unit",
+                ans: "b",
+                opt1: "c",
+                opt2: "d"
+            },
+            {
+                q: "What does RAM stand for?",
+                a: "Random Access Memory",
+                b: "Reallocate Automatic Memmory",
+                c: "Remote Access Memory",
+                d: "None of the above",
+                ans: "a",
+                opt1: "d",
+                opt2: "b"
+            },
+            {
+                q: "Which of the following is the smallest unit of memory?",
+                a: "Byte",
+                b: "Bit",
+                c: "Nibble",
+                d: "Kb",
+                ans: "b",
+                opt1: "a",
+                opt2: "c"
+            },
+            {
+                q: "What does SSD stand for?",
+                a: "Solid State Device",
+                b: "Solid State Drive",
+                c: "Serial State Data",
+                d: "Solid Storage Device",
+                ans: "b",
+                opt1: "c",
+                opt2: "d"
+            },
+            {
+                q: "Which of the following is known as the first commercially produced digital computer?",
+                a: "ENIVAC",
+                b: "EDVAC",
+                c: "UNIVAC",
+                d: "ADVAC",
+                ans: "c",
+                opt1: "b",
+                opt2: "d"
+            },
+            {
+                q: "What is meant by GUI in computers?",
+                a: "Graphical Unique Interface",
+                b: "Graph User Interface",
+                c: "Graphical User Interface",
+                d: "Graphical Universal Interface",
+                ans: "c",
+                opt1: "a",
+                opt2: "b"
+            },
+            {
+                q: "Which of the following options does not represent application software?",
+                a: "Open Office",
+                b: "Microsoft Toolkit",
+                c: "Windows",
+                d: "Ubuntu",
+                ans: "d",
+                opt1: "a",
+                opt2: "b"
+            },
+            {
+                q: "What is the role of computer ports?",
+                a: "Downloading Files",
+                b: "Communicating with computer peripherals",
+                c: "Linking to computer's CPU",
+                d: "None of the above",
+                ans: "b",
+                opt1: "a",
+                opt2: "d"
+            }
+        ];
+
+        //============Defaults=================//
+            $("#quizBox").hide();
+            $("#restartQuiz").hide();
+            $("#nextQuestion").hide();
+
+        //============Variables=================//
+        var pname="";
+        var count=0;
+        var cid="";
+        var points = 0;
+        var len = questions.length;
+       //============Start Quiz Button========//
+            $("#startQuizBtn").click(function(){
+                pname=$("#playerName").val();
+
+                $("#startQuiz").hide();
+                $("#quizBox").show();
+
+                if(pname!=""){
+                    $("#changePlayerName").text(pname);
+                }
+
+                loadQuestion();
+                startTime();
+
+            });
+
+        //============Load Question Function============//
+            function loadQuestion(){
+                $("#q").text(questions[count].q);
+                $("#a").val(questions[count].a);
+                $("#b").val(questions[count].b);
+                $("#c").val(questions[count].c);
+                $("#d").val(questions[count].d);
+
+                $("#questionNo").text(`Question No. ${count+1}/${len}`);
+            }
+
+        //===================Validation==================//
+            $(".opt").click(function(){
+                cid=$(this).attr("id");
+
+                if(cid == questions[count].ans){
+                    $(this).css("background","green");
+                    points++;
+                    $("#points").text(`Points: ${points}`);
+                }else{
+                    $(this).css("background","red");
+                    $("#"+questions[count].ans).css("background","green").fadeOut().fadeIn();
+                }
+
+                $(".opt").prop("disabled","true");
+                $("#nextQuestion").show();
+            })
+
+        //===================Next Button==================//
+        $("#nextQuestion").click(function(){
+            count++;
+            $(".opt").css("background","");
+            $(".opt").prop("disabled","");
+
+            if(count>=len){
+                $("#quizBox").hide();
+                $("#restartQuiz").show();
+                $("#finalPoints").text(`Final Points: ${points}`);
+            }else{
+                loadQuestion();
+            }
+
+            $("#nextQuestion").hide();
+
+        })
+
+        //===================Restart Quiz Button==================//
+        $("#restartQuizBtn").click(function(){
+                $("#quizBox").show();
+                $("#restartQuiz").hide();
+                $("#lifeLine").prop("disabled","");
+                resetQuiz();
+                loadQuestion();
+                startTime();
+        })
+
+        //===================Reset Quiz==================//        
+        function resetQuiz(){
+            count=0;
+            points=0;
+            clearInterval(quiztime);
+            $("#time").text("00:00");
+            $("#points").text(`Points: 0`);
+            $("#questionNo").text(`Question No. ${count+1}/${len}`);
+        }
+
+        //====================Timer======================//
+            //============Variables=========//
+            var totalmins=2;
+                var convertedtosecs=0;
+                var ramainingmins=0;
+                var remainingsecs=0;
+                var quiztime="";
+
+            //=========Start Time Function=========//
+                function startTime(){
+                    totalmins=2;
+                    convertedtosecs=60*totalmins;
+
+                    function timer(){
+                        convertedtosecs--;
+                        
+                        remainingmins=Math.floor(convertedtosecs/60);
+                        remainingsecs=convertedtosecs%60;
+
+                        if(remainingmins<=9 && remainingmins>=0){
+                            remainingmins="0"+remainingmins;
+                        }
+                        if(remainingsecs<=9 && remainingsecs>=0){
+                            remainingsecs="0"+remainingsecs;
+                        }
+
+                        $("#time").text(`${remainingmins}:${remainingsecs}`);
+                        if(convertedtosecs==0){
+                            clearInterval(quiztime);
+                            $("#quizBox").hide();
+                            $("#restartQuiz").show();
+                        }
+                    }
+
+                        quiztime=setInterval(timer,1000);                
+                }
+
+                //=================Life Line=================//
+                    $("#lifeLine").click(function(){
+                        $("#"+questions[count].opt1).val("");
+                        $("#"+questions[count].opt2).val("");
+
+                        $("#"+questions[count].opt1).prop("disabled","true");
+                        $("#"+questions[count].opt2).prop("disabled","true");
+                        $("#lifeLine").prop("disabled","true");
+                    });
+
+    </script>
+</body>
+</html>
